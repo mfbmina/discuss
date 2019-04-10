@@ -1,6 +1,5 @@
 <h5>Topic</h5>
 
-
 <%= @topic.title %>
 
 <%= if @conn.assigns.user.id == @topic.user_id do %>
@@ -10,8 +9,19 @@
   </div>
 <% end %>
 
+<div class="input-field">
+  <textarea class="materialize-textarea"></textarea>
+  <button class="btn">Add Comment</button>
+</div>
+
 <div class="fixed-action-btn">
   <%= link to: topic_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
     <i class="material-icons">add</i>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    window.createSocket(<%= @topic.id %>);
+  });
+</script>
