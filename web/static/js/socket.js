@@ -58,7 +58,7 @@ const createSocket = (topicId) => {
   let channel = socket.channel(`comments:${topicId}`, {})
 
   channel.join()
-    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("ok", resp => { renderComments(resp.comments) })
     .receive("error", resp => { console.log("Unable to join", resp) })
 
   document.querySelector('button').addEventListener('click', () => {
@@ -66,6 +66,24 @@ const createSocket = (topicId) => {
 
     channel.push('comments:add', { content: content });
   });
+
+  channel.on(`comments:${topicId}:new`, (event) => {
+    renderComment(event.comment);
+  });
+}
+
+function renderComment(comment) {
+  var html = `
+    <li class="collection-item">
+      ${comment.content}
+    </li>
+  `
+
+  document.querySelector('.collection').innerHTML += html;
+}
+
+function renderComments(comments) {
+  comments.map(comment => { return renderComment(comment); }).join('');
 }
 
 window.createSocket = createSocket;
