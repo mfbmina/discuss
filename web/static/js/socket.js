@@ -73,9 +73,15 @@ const createSocket = (topicId) => {
 }
 
 function renderComment(comment) {
-  var html = `
+  let email = 'Anonymous'
+  if (comment.user) {
+    email = comment.user.email
+  }
+
+  let html = `
     <li class="collection-item">
       ${comment.content}
+      <div class='secondary-content'>${email}</div>
     </li>
   `
 
